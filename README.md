@@ -1,1 +1,2 @@
-# DBMS_Mini_Project
+# DBMS_Mini_Project 
+Ajay Pawar
