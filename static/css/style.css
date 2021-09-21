@@ -1,0 +1,10 @@
+body{
+    scroll-behavior: smooth;
+    background-color: aquamarine;
+}
+
+.main-image{
+background-image: url("{{url_for('static', filename='images/main-image.png')}}");
+}
+
+
