@@ -36,10 +36,15 @@ mysql=MySQL(app)
 #     pswd varchar(20) NOT NULL, 
 #     PRIMARY KEY (ParticipantId) 
 # )
+# CREATE TABLE adminDetails ( 
+#     adminuser varchar(20) NOT NULL,  
+#     pswrd varchar(20) NOT NULL, 
+#     PRIMARY KEY (adminuser) 
+# )
 # add register method with its updated form in index
 # add log in method with its updated form in index
 # add logout mrthod and its button in new logged in page
-# INSERT INTO RegisterStudent(username, pswd) VALUES('admin','admin@123');
+# INSERT INTO RegisterStudent(adminuser, pswrd) VALUES('admin','admin@123');
 @app.route('/', methods=['GET','POST'])
 def base():
     case=0
@@ -102,6 +107,26 @@ def login():
         else:
             print('Incorrect username / password !')
     return render_template('index.html', msg = msg)
+
+@app.route('/admin-login', methods =['GET', 'POST'])
+def admin_login():
+    msg = ''
+    if request.method == 'POST' and 'admin-uname' in request.form and 'admin-password' in request.form:
+        admin_username = request.form['admin-uname']
+        admin_password = request.form['admin-password']
+        cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
+        cursor.execute('SELECT * FROM adminDetails WHERE adminuser = % s AND pswrd = % s', (admin_username, admin_password, ))
+        admin = cursor.fetchone()
+        if admin:
+            session['loggedin'] = True
+            # session['id'] = admin['id']
+            session['adminuser'] = admin['adminuser']
+            print('Admin Logged in successfully !')
+            return render_template('admin.html', useradmin = admin['adminuser'])
+        else:
+            print('Incorrect username / password !')
+    return render_template('index.html', msg = msg)
+
 
 @app.route('/logout')
 def logout():

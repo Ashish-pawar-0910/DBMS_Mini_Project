@@ -15,22 +15,10 @@
       <a class="navbar-brand" href="#">inEvent</a>
     </div>
     <div class="collapse navbar-collapse" id="myNavbar">
-      <ul class="nav navbar-nav">
-      <li class="active"><a href="#">Home</a></li>
-      <li class="dropdown">
-        <a class="dropdown-toggle" data-toggle="dropdown" href="#">Events
-        <span class="caret"></span></a>
-        <ul class="dropdown-menu">
-          <li><a href="#techincal-events">Technical</a></li>
-          <li><a href="#non-techincal-events">Non Technical</a></li>
-        </ul>
-      </li>
-      <li><a href="#">Know More</a></li>
-      <li><a href="#">Contact</a></li>
     </ul>
     <ul class="nav navbar-nav navbar-right">
       <li class="dropdown">
-        <a class="dropdown-toggle" data-toggle="dropdown" href="#">{{user}}
+        <a class="dropdown-toggle" data-toggle="dropdown" href="#">{{useradmin}}
         <span class="caret"></span></a>
         <ul class="dropdown-menu">
           <li><a href="{{ url_for('logout') }}" class="btn btn-primary p-3">Logout</a></li>
@@ -40,8 +28,8 @@
   </div>
 </nav>
 <center>
-<h1 style="color: white;">Logged in successfully</h1>
+<h1 style="color: white;">Admin Logged in successfully</h1>
 <br>
-<h3>You are Logged in as {{user}}</h3>
+<h3>You are Logged in as {{useradmin}}</h3>
 </center>
 {%endblock %}

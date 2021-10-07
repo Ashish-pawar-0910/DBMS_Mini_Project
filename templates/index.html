@@ -6,6 +6,72 @@
 
 
 {% block body %}
+
+
+<!-- {% if case==1 %}
+    <div class="alert alert-danger fade in">
+      <strong>Warning </strong> Email does not exist. Enter valid email!!
+      <button
+        type="button"
+        class="close"
+        data-dismiss="alert"
+        aria-label="Close"
+      >
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    {% elif case==2 %}
+    <div class="alert alert-danger fade in">
+      <strong>Warning </strong> Enter Official email id only!!
+      <button
+        type="button"
+        class="close"
+        data-dismiss="alert"
+        aria-label="Close"
+      >
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    {% elif case==3 %}
+    <div class="alert alert-danger fade in">
+      <strong>Warning </strong> Account alreaady exists!!
+      <button
+        type="button"
+        class="close"
+        data-dismiss="alert"
+        aria-label="Close"
+      >
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    {% elif case==4 %}
+    <div class="alert alert-danger fade in">
+      <strong>Warning </strong> Username must contain only characters and
+      numbers ! below.
+      <button
+        type="button"
+        class="close"
+        data-dismiss="alert"
+        aria-label="Close"
+      >
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+
+    <div class="alert alert-success fade in">
+      <strong>Success </strong> You have successfully registered !
+      <button
+        type="button"
+        class="close"
+        data-dismiss="alert"
+        aria-label="Close"
+      >
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+
+    {% endif %} -->
+
   <nav class="navbar">
   <div class="container-fluid">
     <div class="navbar-header">
@@ -91,17 +157,19 @@
         </button>
       </div>
       <div class="modal-body">  
-      <center>
-        <form class="login-form" id="log-in-form" action="/login" method="POST">
-            <input type="text" placeholder="username" name='uname'/>
-            <br>
-            <input type="password" placeholder="password" name='password'/>
-            <br>
-            <button type="submit" class="btn btn-primary p-3">Log in</button>
-        </form>
-        <br><p class="message">Not Registered yet? <a href="#" id="next-trigger">Register</a></p>
+        <center>
+          <p ><span style="color: gray;">Student</span> &nbsp|&nbsp <a href="#" id="admin-trigger" style="text-decoration:none">Admin</a></p>
+          <form class="login-form" id="log-in-form" action="/login" method="POST">
+              <input type="text" placeholder="username" name='uname'/>
+              <br>
+              <input type="password" placeholder="password" name='password'/>
+              <br>
+              <button type="submit" class="btn btn-primary p-3">Log in</button>
+          </form>
+          <br><p class="message">Not Registered yet? <a href="#" id="next-trigger">Register</a></p>
+        </center>
       </div>
-      </center>
+      
       <div class="modal-footer">
         <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
         
@@ -109,6 +177,36 @@
     </div>
   </div>
 </div> 
+
+<div class="modal fade" id="admin-log-in-form" tabindex="-1" role="dialog" aria-labelledby="log-in-formTitle" aria-hidden="true" style="background: none;">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLongTitle">LOG IN</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">  
+      <center>
+        <p ><a href="#" id="student-trigger"  style="text-decoration:none">Student</a> &nbsp|&nbsp<span style="color: gray;"> Admin</p>
+        <form class="login-form" id="admin-log-in-form" action="/admin-login" method="POST">
+            <input type="text" placeholder="username" name='admin-uname'/>
+            <br>
+            <input type="password" placeholder="password" name='admin-password'/>
+            <br>
+            <button type="submit" class="btn btn-primary p-3">Log in</button>
+        </form>
+        <br><p class="message">Not Registered yet? <a href="#" id="admin-next-trigger">Register</a></p>
+      </div>
+      </center>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div> 
+
 <script>
     $("#next-trigger").click(function(){
       $('#log-in-form').modal('hide');
@@ -119,6 +217,20 @@
     $("#back-trigger").click(function(){
       $('#sign-up-form').modal('hide');
       $('#log-in-form').modal('show');
+    });
+
+    $("#admin-trigger").click(function(){
+      $('#log-in-form').modal('hide');
+      $('#admin-log-in-form').modal('show');
+    })
+
+     $("#admin-next-trigger").click(function(){
+      $('#admin-log-in-form').modal('hide');
+      $('#sign-up-form').modal('show');
+    });
+    $("#student-trigger").click(function(){
+      $('#log-in-form').modal('show');
+      $('#admin-log-in-form').modal('hide');
     })
 </script>
 
@@ -336,70 +448,6 @@
   </div>
 
 </footer>
-
-{% if case==1 %}
-    <div class="alert alert-warning alert-dismissible fade show" role="alert">
-      <strong>Warning </strong> Email does not exist. Enter valid email!!
-      <button
-        type="button"
-        class="close"
-        data-dismiss="alert"
-        aria-label="Close"
-      >
-        <span aria-hidden="true">&times;</span>
-      </button>
-    </div>
-    {% elif case==2 %}
-    <div class="alert alert-warning alert-dismissible fade show" role="alert">
-      <strong>Warning </strong> Enter Official email id only!!
-      <button
-        type="button"
-        class="close"
-        data-dismiss="alert"
-        aria-label="Close"
-      >
-        <span aria-hidden="true">&times;</span>
-      </button>
-    </div>
-    {% elif case==3 %}
-    <div class="alert alert-warning alert-dismissible fade show" role="alert">
-      <strong>Warning </strong> Account alreaady exists!!
-      <button
-        type="button"
-        class="close"
-        data-dismiss="alert"
-        aria-label="Close"
-      >
-        <span aria-hidden="true">&times;</span>
-      </button>
-    </div>
-    {% elif case==4 %}
-    <div class="alert alert-warning alert-dismissible fade show" role="alert">
-      <strong>Warning </strong> Username must contain only characters and
-      numbers ! below.
-      <button
-        type="button"
-        class="close"
-        data-dismiss="alert"
-        aria-label="Close"
-      >
-        <span aria-hidden="true">&times;</span>
-      </button>
-    </div>
-
-    <div class="alert alert-success alert-dismissible fade show" role="alert">
-      <strong>Success </strong> You have successfully registered !
-      <button
-        type="button"
-        class="close"
-        data-dismiss="alert"
-        aria-label="Close"
-      >
-        <span aria-hidden="true">&times;</span>
-      </button>
-    </div>
-
-    {% endif %}
 
 {% endblock %}
 
