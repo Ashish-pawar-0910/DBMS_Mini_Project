@@ -16,11 +16,11 @@ Make sure you have the dependencies installed:
 
 Following packages needed to be installed before getiing started with it.
 - flask_mysqldb
-   pip install flask_mysqldb
+  - pip install flask_mysqldb
 - yaml
-   pip install pyyaml
+  - pip install pyyaml
 - requests
-   pip install requests
+  - pip install requests
 
 Start with Website:
 
