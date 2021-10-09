@@ -16,11 +16,11 @@ Make sure you have the dependencies installed:
 
 Following packages needed to be installed before getiing started with it.
 - flask_mysqldb
-  - pip install flask_mysqldb
+  - `pip install flask_mysqldb`
 - yaml
-  - pip install pyyaml
+  - `pip install pyyaml`
 - requests
-  - pip install requests
+  - `pip install requests`
 
 Start with Website:
 
@@ -29,7 +29,7 @@ Start with Website:
  - `mysql_user`: your username for MySQL
  - `mysql_password`: your password for MySQL
  - `mysql_db`: databse name which you created for this project
- - `sec_key`: secret key for login sessions
+ - `sec_key`: secret key for login sessions <br/>
     *To get sec_key in python compiler import `import os` and run `os.random(24)`*
     You are all set to run the website.
 3. Now run `app.py` file by running `python app.py` or `flask run` in terminal under `/DBMS_MINI_PROJECT` directory. This will give you the path for localhost on which your file is currently running locally. 
