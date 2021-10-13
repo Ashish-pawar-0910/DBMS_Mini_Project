@@ -1,0 +1,35 @@
+{% extends 'base.html'%} 
+{% block head %} 
+{%endblock %} 
+
+{% block body %} 
+
+<nav class="navbar">
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="#">inEvent</a>
+    </div>
+    <div class="collapse navbar-collapse" id="myNavbar">
+    </ul>
+    <ul class="nav navbar-nav navbar-right">
+      <li class="dropdown">
+        <a class="dropdown-toggle" data-toggle="dropdown" href="#">{{useradmin}}
+        <span class="caret"></span></a>
+        <ul class="dropdown-menu">
+          <li><a href="{{ url_for('logout') }}" class="btn btn-primary p-3">Logout</a></li>
+        </ul>
+      </li>
+    </ul>
+  </div>
+</nav>
+<center>
+<h1 style="color: white;">Admin Logged in successfully</h1>
+<br>
+<h3>You are Logged in as {{useradmin}}</h3>
+</center>
+{%endblock %}
