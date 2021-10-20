@@ -1,3 +1,4 @@
+
 # DBMS_Mini_Project
 
 ## ***Event Management System***
@@ -34,4 +35,4 @@ Start with Website:
     You are all set to run the website.
 3. Now run `app.py` file by running `python app.py` or `flask run` in terminal under `/DBMS_MINI_PROJECT` directory. This will give you the path for localhost on which your file is currently running locally. 
 4. Paste the path copied from terminal in the browser.
-That's it!!
+That's it!
