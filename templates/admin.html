@@ -28,8 +28,49 @@
   </div>
 </nav>
 <center>
-<h1 style="color: white;">Admin Logged in successfully</h1>
-<br>
-<h3>You are Logged in as {{useradmin}}</h3>
+
+<form class="event-form" action="/event" method="POST">
+  <input type="text" placeholder="Event ID" name="event-id" required/><br />
+  <input type="text" placeholder="Event Name" name="event-name" required/><br />
+  <span div="rbtn"><input type="radio" name="event-type" value='technical' required></span>Technical
+  <span div="rbtn"><input type="radio" name="event-type" value='non technical' required></span>Non Technical<br />
+  <input type="date" name="event-date" id="edate" min={{current_date}} required><br />
+  <input type="time" value="13:00" placeholder="event-start-time" required><br />
+  <input type="time" value="13:00" placeholder="event-end-time" required><br />
+  <input type="text" placeholder="Event Information" name="event-info" maxlength="1000" required/><br />
+  <input type="text" placeholder="Event Location" name="event-location" required/><br />
+  <br><br>
+  <button type="submit" class="btn btn-primary p-3" >Create</button>
+</form>
+
+<div class="ss" style="color:#ffffff;">
+  {{etype}}, {{edate}}, {{estime}}, {{eetime}}
+</div>
+
+<div class="events-list" style="margin-top: 10px;">
+  <table class="events">
+    <caption>Created Events</caption>
+    <tr>
+      <th>Event ID</th>
+      <th>Event Name</th>
+      <th>Event Type</th>
+      <th>Event Date</th>
+      <th>Start Time</th>
+      <th>End Time</th>
+      <th>Event Location</th>
+    </tr>
+
+    <!-- <tr>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+    </tr> -->
+
+  </table>
+</div>
 </center>
 {%endblock %}
