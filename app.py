@@ -9,7 +9,7 @@ import re
 import inspect
 import validators
 import requests
-from datetime import datetime
+from datetime import datetime, date
 
 mydata=yaml.load(open('private.yaml'))
 app=Flask(__name__)
@@ -117,15 +117,19 @@ def admin_login():
         cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
         cursor.execute('SELECT * FROM adminDetails WHERE adminuser = % s AND pswrd = % s', (admin_username, admin_password, ))
         admin = cursor.fetchone()
+        d=date.today()
+        current_date=d.strftime("%d/%m/%Y")
         if admin:
             session['loggedin'] = True
             # session['id'] = admin['id']
             session['adminuser'] = admin['adminuser']
             print('Admin Logged in successfully !')
-            return render_template('admin.html', useradmin = admin['adminuser'])
+            return render_template('admin.html',current_date=current_date)
         else:
             print('Incorrect username / password !')
+        
     return render_template('index.html', msg = msg)
+
 
 
 @app.route('/logout')
