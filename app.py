@@ -1,4 +1,5 @@
 from os import curdir
+from typing import Text
 from flask import *
 # from flask.scaffold import _matching_loader_thinks_module_is_package
 from werkzeug.utils import redirect
@@ -10,6 +11,7 @@ import inspect
 import validators
 import requests
 from datetime import datetime, date
+import time
 
 mydata=yaml.load(open('private.yaml'))
 app=Flask(__name__)
@@ -124,12 +126,52 @@ def admin_login():
             # session['id'] = admin['id']
             session['adminuser'] = admin['adminuser']
             print('Admin Logged in successfully !')
-            return render_template('admin.html',current_date=current_date)
+            cursor.execute("SELECT * FROM registerEvent ORDER BY edate ASC,eetime ASC;")
+            event_data=cursor.fetchall()
+            return render_template('admin.html',useradmin=admin_username,event_data=event_data)
         else:
             print('Incorrect username / password !')
         
     return render_template('index.html', msg = msg)
 
+
+# CREATE TABLE registerEvent( 
+#     eid varchar(20) NOT NULL,
+#     ename varchar(20) NOT NULL,
+#     etype varchar(20) NOT NULL,
+#     edate DATE NOT NULL,
+#     estime TIME NOT NULL,
+#     eetime TIME NOT NULL,
+#     einfo TEXT NOT NULL,
+#     eloc varchar(255) NOT NULL,
+#     PRIMARY KEY (eid) 
+# );
+
+@app.route('/events', methods = ['GET','POST'])
+def create_event():
+    if request.method == 'POST':
+        event=request.form
+        eid=event['event-id']
+        ename=event['event-name']
+        etype=event['event-type']
+        edate=event.get('event-date')
+        estime=event.get('event-start-time')
+        eetime=event.get('event-end-time')
+        einfo=event['event-info']
+        eloc=event['event-location']
+        # start_time = time.strptime(str(estime),"%Y-%m-%d %H:%M")
+        # end_time = time.strptime(str(eetime),"%Y-%m-%d %H:%M")
+        # print(etype,edate,estime,eetime)
+
+        cur=mysql.connection.cursor(MySQLdb.cursors.DictCursor)
+        cur.execute("INSERT INTO registerEvent(eid, ename, etype, edate, estime, eetime, einfo, eloc) VALUES(%s, %s, %s, %s, %s, %s, %s, %s)",(eid, ename, etype, edate, estime, eetime, einfo, eloc))
+        mysql.connection.commit()
+        # print("event created")
+        cur.execute("SELECT * FROM registerEvent ORDER BY edate ASC,eetime ASC;")
+        event_data=cur.fetchall()
+        return render_template('admin.html',event_data=event_data,flag='success')
+    else:
+        return render_template('admin.html')
 
 
 @app.route('/logout')
