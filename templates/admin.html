@@ -70,6 +70,22 @@
       <td>{{event.estime}}</td>
       <td>{{event.eetime}}</td>
       <td>{{event.eloc}}</td>
+      <td>
+        <!-- <form action="" method="post"> -->
+        <form>
+          <button type="submit" style="background-color: black; border:none">
+            <i class='fa fa-edit' style='color:#ffffff'></i>
+          </button>
+        </form>
+      </td>
+      <td>
+        <!-- <form action="{{ url_for('registerEvent', event_id = event.eid) }}" -->
+        <form>
+          <button type="submit" style="background-color: black; border:none">
+            <i class='fa fa-trash' style='color:#ffffff' ></i>
+          </button>
+        </form>
+      </td>
     </tr>
     {% endfor %}
 

@@ -194,10 +194,19 @@ def registerEvent(event_id):
     if request.method == 'POST':
         current_user=session['username']
         cur=mysql.connection.cursor(MySQLdb.cursors.DictCursor)
-        cur.execute("INSERT INTO registeredStudents(eid,eventname,usermail,username) SELECT re.eid, re.ename, rs.email, rs.username FROM registerEvent re, registerstudent rs WHERE re.eid=%s and rs.username=%s and NOT EXISTS( SELECT rs.usermail FROM registeredstudents rs,registerEvent re WHERE rs.eid =re.eid and rs.username=%s)",(eid,current_user,current_user))
-        print(event_id)
-        mysql.connection.commit()
-        return render_template('user.html')
+        cur.execute(" SELECT * FROM registeredstudents WHERE eid=%s and username=%s",(eid,current_user))
+        records=cur.fetchall()
+        # print(len(records))
+        cur.execute("SELECT * FROM registerEvent ORDER BY edate ASC,eetime ASC;")
+        event_data=cur.fetchall()
+        if len(records)==0:
+            cur.execute("INSERT INTO registeredStudents(eid,eventname,usermail,username) SELECT re.eid, re.ename, rs.email, rs.username FROM registerEvent re, registerstudent rs WHERE re.eid=%s and rs.username=%s",(eid,current_user))
+            # and NOT EXISTS( SELECT rs.usermail,rs.eid FROM registeredstudents rs,registerEvent re WHERE rs.eid =re.eid and rs.username=%s)
+            print(event_id)
+            mysql.connection.commit()
+            return render_template('user.html',event_data=event_data, user=session['username'], err_msg=0)
+        else:
+            return render_template('user.html',event_data=event_data, user=session['username'], err_msg=1)
     else:
         return redirect('/logout')
 
