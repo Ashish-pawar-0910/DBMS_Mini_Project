@@ -105,7 +105,9 @@ def login():
             # session['id'] = account['id']
             session['username'] = account['username']
             print('Logged in successfully !')
-            return render_template('user.html', user = account['username'])
+            cursor.execute("SELECT * FROM registerEvent ORDER BY edate ASC,eetime ASC;")
+            event_data=cursor.fetchall()
+            return render_template('user.html', user = account['username'], event_data=event_data)
         else:
             print('Incorrect username / password !')
     return render_template('index.html', msg = msg)
@@ -173,6 +175,31 @@ def create_event():
     else:
         return render_template('admin.html')
 
+# CREATE TABLE registeredStudents(
+#     eid varchar(25), 
+#     eventname varchar(30),
+#     usermail varchar(80),
+#     username varchar(30)
+# );
+
+# INSERT INTO registeredStudents(eid,eventname,usermail,username)
+#     SELECT re.eid, re.ename, rs.email, rs.username
+#     FROM registerEvent re, registerstudent rs
+#     WHERE re.eid=event_id and rs.username=session['username']
+#     and NOT EXISTS( SELECT usermail FROM registeredstudents rs WHERE rs.eid =event_id and rs.usermail=session['username]);
+
+@app.route('/registerEvent/<event_id>', methods = ['GET','POST'])
+def registerEvent(event_id):
+    eid=event_id
+    if request.method == 'POST':
+        current_user=session['username']
+        cur=mysql.connection.cursor(MySQLdb.cursors.DictCursor)
+        cur.execute("INSERT INTO registeredStudents(eid,eventname,usermail,username) SELECT re.eid, re.ename, rs.email, rs.username FROM registerEvent re, registerstudent rs WHERE re.eid=%s and rs.username=%s and NOT EXISTS( SELECT rs.usermail FROM registeredstudents rs,registerEvent re WHERE rs.eid =re.eid and rs.username=%s)",(eid,current_user,current_user))
+        print(event_id)
+        mysql.connection.commit()
+        return render_template('user.html')
+    else:
+        return redirect('/logout')
 
 @app.route('/logout')
 def logout():

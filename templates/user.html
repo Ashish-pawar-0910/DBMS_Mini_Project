@@ -1,47 +1,96 @@
-{% extends 'base.html'%} 
-{% block head %} 
-{%endblock %} 
+{% extends 'base.html'%}
+{% block head %}
+{%endblock %}
 
-{% block body %} 
+{% block body %}
 
 <nav class="navbar">
   <div class="container-fluid">
     <div class="navbar-header">
-      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
+      <button type="button"
+        class="navbar-toggle"
+        data-toggle="collapse"
+        data-target="#myNavbar">
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
       </button>
-      <a class="navbar-brand" href="#">inEvent</a>
+      <a class="navbar-brand"
+        href="#">inEvent</a>
     </div>
-    <div class="collapse navbar-collapse" id="myNavbar">
+    <div class="collapse navbar-collapse"
+      id="myNavbar">
       <ul class="nav navbar-nav">
-      <li class="active"><a href="#">Home</a></li>
-      <li class="dropdown">
-        <a class="dropdown-toggle" data-toggle="dropdown" href="#">Events
-        <span class="caret"></span></a>
-        <ul class="dropdown-menu">
-          <li><a href="#techincal-events">Technical</a></li>
-          <li><a href="#non-techincal-events">Non Technical</a></li>
-        </ul>
-      </li>
-      <li><a href="#">Know More</a></li>
-      <li><a href="#">Contact</a></li>
-    </ul>
-    <ul class="nav navbar-nav navbar-right">
-      <li class="dropdown">
-        <a class="dropdown-toggle" data-toggle="dropdown" href="#">{{user}}
-        <span class="caret"></span></a>
-        <ul class="dropdown-menu">
-          <li><a href="{{ url_for('logout') }}" class="btn btn-primary p-3">Logout</a></li>
-        </ul>
-      </li>
-    </ul>
-  </div>
+        <li class="active"><a href="#">Home</a></li>
+        <li class="dropdown">
+          <a class="dropdown-toggle"
+            data-toggle="dropdown"
+            href="#">Events
+            <span class="caret"></span></a>
+          <ul class="dropdown-menu">
+            <li><a href="#techincal-events">Technical</a></li>
+            <li><a href="#non-techincal-events">Non Technical</a></li>
+          </ul>
+        </li>
+        <li><a href="#">Know More</a></li>
+        <li><a href="#">Contact</a></li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        <li class="dropdown">
+          <a class="dropdown-toggle"
+            data-toggle="dropdown"
+            href="#">{{user}}
+            <span class="caret"></span></a>
+          <ul class="dropdown-menu">
+            <li><a href="{{ url_for('logout') }}"
+                class="btn btn-primary p-3">Logout</a></li>
+          </ul>
+        </li>
+      </ul>
+    </div>
 </nav>
-<center>
-<h1 style="color: white;">Logged in successfully</h1>
+  <!-- <h1 style="color: white;">Logged in successfully</h1>
 <br>
-<h3>You are Logged in as {{user}}</h3>
+<h3>You are Logged in as {{user}}</h3> -->
+<center>
+  <table class="events mx-5 my-3 p-3">
+    <caption>Created Events</caption>
+    <tr>
+      <th>Event ID</th>
+      <th>Event Name</th>
+      <th>Event Type</th>
+      <th>Event Date</th>
+      <th>Start Time</th>
+      <th>End Time</th>
+      <th>Event Location</th>
+      <th>Event Information</th>
+    </tr>
+    {% if flag=='success' %}
+    <script>
+      alert("Event created Successfully!!")
+    </script>
+    {% endif %}
+    {% for event in event_data %}
+    <tr>
+      <td>{{event.eid}}</td>
+      <td>{{event.ename}}</td>
+      <td>{{event.etype}}</td>
+      <td>{{event.edate}}</td>
+      <td>{{event.estime}}</td>
+      <td>{{event.eetime}}</td>
+      <td>{{event.eloc}}</td>
+      <td>{{event.einfo}}</td>
+      <td>
+        <form action="{{ url_for('registerEvent', event_id = event.eid) }}"
+          method="post">
+          <input type="submit"
+            value="Register for Event"
+            class="btn btn-primary p-3">
+        </form>
+      </td>
+    </tr>
+    {% endfor %}
+
+  </table>
 </center>
 {%endblock %}
