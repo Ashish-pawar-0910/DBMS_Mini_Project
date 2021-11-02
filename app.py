@@ -175,6 +175,44 @@ def create_event():
     else:
         return render_template('admin.html')
 
+@app.route('/deleteEvent/<event_id>', methods = ['GET','POST'])
+def deleteEvent(event_id):
+    # eid=event_id
+    if request.method == 'POST':
+        cur=mysql.connection.cursor(MySQLdb.cursors.DictCursor)
+        cur.execute("DELETE FROM registerEvent  WHERE eid=%s",(event_id,))
+        mysql.connection.commit()
+        cur.execute("SELECT * FROM registerEvent ORDER BY edate ASC,eetime ASC;")
+        event_data=cur.fetchall()
+        return render_template('admin.html',event_data=event_data,deleteFlag='success')
+    else:
+        return render_template('admin.html')
+
+@app.route('/editEvent/<event_id>', methods = ['GET','POST'])
+def editEvent(event_id):
+    # eid=event_id
+    if request.method == 'POST':
+        editEvent=request.form
+        eid=   editEvent['event-id']
+        ename= editEvent['event-name']
+        etype= editEvent['event-type']
+        edate= editEvent.get('event-date')
+        estime=editEvent.get('event-start-time')
+        eetime=editEvent.get('event-end-time')
+        einfo= editEvent['event-info']
+        eloc=  editEvent['event-location']
+        print(" currently editing", event_id)
+        cur=mysql.connection.cursor(MySQLdb.cursors.DictCursor)
+        cur.execute("UPDATE registerEvent SET eid=%s, ename=%s, etype=%s, edate=%s, estime=%s, eetime=%s, einfo=%s, eloc=%s WHERE eid=%s",(eid, ename, etype, edate, estime, eetime, einfo, eloc,event_id))
+        # cur.execute("REPLACE INTO registerEvent VALUES (%s,%s,%s,%s,%s,%s,%s,%s) WHERE eid=%s",(eid, ename, etype, edate, estime, eetime, einfo, eloc, event_id))
+        mysql.connection.commit()
+        # print("event created")
+        cur.execute("SELECT * FROM registerEvent ORDER BY edate ASC,eetime ASC;")
+        event_data=cur.fetchall()
+        return render_template('admin.html',event_data=event_data,editFlag='success')
+    else:
+        return render_template('admin.html')
+
 # CREATE TABLE registeredStudents(
 #     eid varchar(25), 
 #     eventname varchar(30),
