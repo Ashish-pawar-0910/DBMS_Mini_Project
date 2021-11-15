@@ -150,6 +150,10 @@ height: 800px;
     width: 80%; 
     padding:5px; 
 }
+.event-from input[type="radio"] {
+  float:left;
+}
+
 ::placeholder{
     color: rgb(173, 162, 162);
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;

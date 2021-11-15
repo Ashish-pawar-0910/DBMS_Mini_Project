@@ -26,17 +26,17 @@ mysql=MySQL(app)
 
 # create database MiniProject
 # create table RegisterStudent
-# CREATE TABLE RegisterStudent ( 
-#     ParticipantId int NOT NULL AUTO_INCREMENT,
-#     fname varchar(20) NOT NULL,  
+#CREATE TABLE RegisterStudent ( 
+  #  ParticipantId int NOT NULL AUTO_INCREMENT,
+ #    fname varchar(20) NOT NULL,  
 #     lname varchar(20) NOT NULL,  
-#     dept varchar(20) NOT NULL,  
-#     division varchar(10) NOT NULL,  
-#     rollno varchar(20) NOT NULL, 
-#     email varchar(40) NOT NULL,  
-#     username varchar(20) NOT NULL,  
-#     pswd varchar(20) NOT NULL, 
-#     PRIMARY KEY (ParticipantId) 
+  #   dept varchar(20) NOT NULL,  
+ #    division varchar(10) NOT NULL,  
+ #    rollno varchar(20) NOT NULL, 
+ #    email varchar(40) NOT NULL,  
+ #    username varchar(20) NOT NULL,  
+ #    pswd varchar(20) NOT NULL, 
+  #   PRIMARY KEY (ParticipantId) 
 # )
 # CREATE TABLE adminDetails ( 
 #     adminuser varchar(20) NOT NULL,  

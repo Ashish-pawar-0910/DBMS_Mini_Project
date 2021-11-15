@@ -30,15 +30,15 @@
 <center>
 
 <form class="event-form" action="/events" method="POST">
-  <input type="text" placeholder="Event ID" name="event-id" required/><br />
-  <input type="text" placeholder="Event Name" name="event-name" required/><br />
+  <input type="text" placeholder="Event ID*" name="event-id" required/><br />
+  <input type="text" placeholder="Event Name*" name="event-name" required/><br />
   <span div="rbtn"><input type="radio" name="event-type" value='technical' required>Technical
   <span div="rbtn"><input type="radio" name="event-type" value='non technical' required></span>Non Technical<br />
   <input type="date" name="event-date" id="edate" min={{current_date}} required><br />
-  <input type="time" value="13:00" name="event-start-time" placeholder="event-start-time" required><br />
-  <input type="time" value="13:00" name="event-end-time" placeholder="event-end-time" required><br />
-  <input type="textarea" placeholder="Event Information" name="event-info" maxlength="1000" required/><br />
-  <input type="text" placeholder="Event Location" name="event-location" required/><br />
+  <input type="time" value="13:00" name="event-start-time" placeholder="event-start-time*" required><br />
+  <input type="time" value="13:00" name="event-end-time" placeholder="event-end-time*" required><br />
+  <input type="textarea" placeholder="Event Information*" name="event-info" maxlength="1000" required/><br />
+  <input type="text" placeholder="Event Location*" name="event-location" required/><br />
   <br><br>
   <button type="submit" class="btn btn-primary p-3" >Create</button>
 </form>
