@@ -13,7 +13,7 @@ import requests
 from datetime import datetime, date
 import time
 
-mydata=yaml.load(open('private.yaml'))
+mydata=yaml.safe_load(open('private.yaml'))
 app=Flask(__name__)
 app.secret_key = mydata['sec_key']
 
@@ -26,27 +26,27 @@ mysql=MySQL(app)
 
 # create database MiniProject
 # create table RegisterStudent
-#CREATE TABLE RegisterStudent ( 
-  #  ParticipantId int NOT NULL AUTO_INCREMENT,
- #    fname varchar(20) NOT NULL,  
+# CREATE TABLE RegisterStudent ( 
+#     ParticipantId int NOT NULL AUTO_INCREMENT,
+#     fname varchar(20) NOT NULL,  
 #     lname varchar(20) NOT NULL,  
-  #   dept varchar(20) NOT NULL,  
- #    division varchar(10) NOT NULL,  
- #    rollno varchar(20) NOT NULL, 
- #    email varchar(40) NOT NULL,  
- #    username varchar(20) NOT NULL,  
- #    pswd varchar(20) NOT NULL, 
-  #   PRIMARY KEY (ParticipantId) 
-# )
+#     dept varchar(20) NOT NULL,  
+#     division varchar(10) NOT NULL,  
+#     rollno varchar(20) NOT NULL, 
+#     email varchar(40) NOT NULL,  
+#     username varchar(20) NOT NULL,  
+#     pswd varchar(20) NOT NULL, 
+#     PRIMARY KEY (ParticipantId) 
+# );
 # CREATE TABLE adminDetails ( 
 #     adminuser varchar(20) NOT NULL,  
 #     pswrd varchar(20) NOT NULL, 
 #     PRIMARY KEY (adminuser) 
-# )
+# );
 # add register method with its updated form in index
 # add log in method with its updated form in index
 # add logout mrthod and its button in new logged in page
-# INSERT INTO RegisterStudent(adminuser, pswrd) VALUES('admin','admin@123');
+# INSERT INTO adminDetails(adminuser, pswrd) VALUES('admin','admin@123');
 @app.route('/', methods=['GET','POST'])
 def base():
     case=0
@@ -58,16 +58,17 @@ def base():
         div=student['div']
         rollno=student['rollno']
         email=student['email']
-        response = requests.get("https://isitarealemail.com/api/email/validate",params = {'email': email})
-        status = response.json()['status']
+        # response = requests.get("https://isitarealemail.com/api/email/validate",params = {'email': email})
+        # status = response.json()['status']
         mails=email.split('@')
-        if status == "invalid":
-            # flash("Email does not exist. Enter valid email!!")
-            return render_template('index.html',case=1)
-        elif mails[1]!='pccoepune.org':
-            # flash("Enter Official email id only!!")
+        # if status == "invalid":
+        #     # flash("Email does not exist. Enter valid email!!")
+        #     return render_template('index.html',case=1)
+        if mails[1]!='pccoepune.org':
+            flash("Enter Official email id only!!")
             return render_template('index.html', case=2)
         username=student['username']
+        mobile=student['mobile']
         pswd=student['password']
         cur=mysql.connection.cursor(MySQLdb.cursors.DictCursor)
         cur.execute('SELECT * FROM RegisterStudent WHERE username = % s', (username, ))
@@ -81,7 +82,7 @@ def base():
             # flash('Username must contain only characters and numbers !') 
             return render_template('index.html', case=4)
         else:
-            cur.execute("INSERT INTO RegisterStudent(fname, lname, dept, division, rollno, email, username, pswd) VALUES(%s, %s, %s, %s, %s, %s, %s, %s)",(fname,lname,dept,div,rollno,email,username,pswd))
+            cur.execute("INSERT INTO RegisterStudent(fname, lname, dept, division, rollno, email, username, mobile, pswd) VALUES(%s, %s, %s, %s, %s, %s, %s, %s, %s)",(fname,lname,dept,div,rollno,email,username,mobile,pswd))
             mysql.connection.commit()
             # flash('You have successfully registered !')
             return render_template('index.html', case=5)
@@ -100,8 +101,7 @@ def login():
         cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
         cursor.execute('SELECT * FROM RegisterStudent WHERE username = % s AND pswd = % s', (username, password, ))
         account = cursor.fetchone()
-        if account:
-            session['loggedin'] = True
+        if account:            
             # session['id'] = account['id']
             session['username'] = account['username']
             print('Logged in successfully !')
@@ -109,8 +109,14 @@ def login():
             event_data=cursor.fetchall()
             return render_template('user.html', user = account['username'], event_data=event_data)
         else:
-            print('Incorrect username / password !')
+            print('Not registered! Register First')
     return render_template('index.html', msg = msg)
+
+@app.route('/biometric-login', methods = ['POST'])
+def bioemtric_login():
+    print("Time to redirect!!")
+    return redirect("http://localhost:4200/")
+
 
 @app.route('/admin-login', methods =['GET', 'POST'])
 def admin_login():
@@ -136,7 +142,28 @@ def admin_login():
         
     return render_template('index.html', msg = msg)
 
-
+@app.route('/checkAuth', methods=['GET'])
+def checkAuth():
+    print("Checking Auth Status")
+    authStatus = request.args.get('authStatus')
+    mobileNumber = request.args.get('user')
+    print(authStatus)
+    print(mobileNumber)
+    if authStatus=='true':
+        cur=mysql.connection.cursor(MySQLdb.cursors.DictCursor)
+        cur.execute('SELECT * FROM RegisterStudent WHERE mobile = % s', (mobileNumber, ))
+        user = cur.fetchone()
+        print()
+        session['loggedin'] = True
+        # session['id'] = account['id']
+        session['username'] = user['username']
+        print('Logged in successfully !')
+        cur.execute("SELECT * FROM registerEvent ORDER BY edate ASC,eetime ASC;")
+        event_data=cur.fetchall()
+        return render_template('user.html', user = user['username'], event_data=event_data)
+    else:
+        return ("Incorrect Username/ Password!")
+    return render_template('index.html')
 # CREATE TABLE registerEvent( 
 #     eid varchar(20) NOT NULL,
 #     ename varchar(20) NOT NULL,
@@ -175,50 +202,12 @@ def create_event():
     else:
         return render_template('admin.html')
 
-@app.route('/deleteEvent/<event_id>', methods = ['GET','POST'])
-def deleteEvent(event_id):
-    # eid=event_id
-    if request.method == 'POST':
-        cur=mysql.connection.cursor(MySQLdb.cursors.DictCursor)
-        cur.execute("DELETE FROM registerEvent  WHERE eid=%s",(event_id,))
-        mysql.connection.commit()
-        cur.execute("SELECT * FROM registerEvent ORDER BY edate ASC,eetime ASC;")
-        event_data=cur.fetchall()
-        return render_template('admin.html',event_data=event_data,deleteFlag='success')
-    else:
-        return render_template('admin.html')
-
-@app.route('/editEvent/<event_id>', methods = ['GET','POST'])
-def editEvent(event_id):
-    # eid=event_id
-    if request.method == 'POST':
-        editEvent=request.form
-        eid=   editEvent['event-id']
-        ename= editEvent['event-name']
-        etype= editEvent['event-type']
-        edate= editEvent.get('event-date')
-        estime=editEvent.get('event-start-time')
-        eetime=editEvent.get('event-end-time')
-        einfo= editEvent['event-info']
-        eloc=  editEvent['event-location']
-        print(" currently editing", event_id)
-        cur=mysql.connection.cursor(MySQLdb.cursors.DictCursor)
-        cur.execute("UPDATE registerEvent SET eid=%s, ename=%s, etype=%s, edate=%s, estime=%s, eetime=%s, einfo=%s, eloc=%s WHERE eid=%s",(eid, ename, etype, edate, estime, eetime, einfo, eloc,event_id))
-        # cur.execute("REPLACE INTO registerEvent VALUES (%s,%s,%s,%s,%s,%s,%s,%s) WHERE eid=%s",(eid, ename, etype, edate, estime, eetime, einfo, eloc, event_id))
-        mysql.connection.commit()
-        # print("event created")
-        cur.execute("SELECT * FROM registerEvent ORDER BY edate ASC,eetime ASC;")
-        event_data=cur.fetchall()
-        return render_template('admin.html',event_data=event_data,editFlag='success')
-    else:
-        return render_template('admin.html')
-
 # CREATE TABLE registeredStudents(
 #     eid varchar(25), 
 #     eventname varchar(30),
 #     usermail varchar(80),
 #     username varchar(30)
-# );
+# );*
 
 # INSERT INTO registeredStudents(eid,eventname,usermail,username)
 #     SELECT re.eid, re.ename, rs.email, rs.username

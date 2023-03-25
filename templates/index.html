@@ -130,6 +130,7 @@
                   <input type="text" placeholder="Roll No" name="rollno" /><br />
                   <input type="email" placeholder="mail id" name="email" /><br />
                   <input type="text" placeholder="User name" id="username" name="username"/><br />
+                  <input type="text" placeholder="Mobile Number" id="mobile" name="mobile"/><br />
                   <input type="password" placeholder="password" id="password" name="password"/>
                   <br><br>
                   <button type="submit" class="btn btn-primary p-3" >Register</button>
@@ -165,6 +166,10 @@
               <input type="password" placeholder="password" name='password'/>
               <br>
               <button type="submit" class="btn btn-primary p-3">Log in</button>
+          </form>
+
+          <form class="login-form" id="log-in-form-biometric" action="/biometric-login" method="POST">
+            <button type="submit" class="btn btn-primary p-3">Log in with Biometric</button>
           </form>
           <br><p class="message">Not Registered yet? <a href="#" id="next-trigger">Register</a></p>
         </center>
@@ -238,9 +243,7 @@
   </div>
   <div class="main-cont">   
     <h2 class="main-title">inEvent</h2>
-    <h5 class="main-subtitle">AN EVENT MANAGEMENT SYSTEM by <br> 
-    TECOB267, TECOB268, TECOB269, TECOB270
-    </h5>  
+    <h5 class="main-subtitle">Lorem ipsum dolor sit amet consectetur, adipisicing elit. Unde, cumque?</h5>  
   </div>
 
     <br><br><br><br><br>
@@ -258,7 +261,7 @@
   <!-- Wrapper for slides -->
   <div class="carousel-inner">
     <div class="item active">
-      <div class="c-image" style="background-image:  linear-gradient(rgba(1,0,0,0), rgba(0,0,0,1)),url('/static/images/codigo.png');"></div>
+      <div class="c-image" style="background-image:  linear-gradient(rgba(1,0,0,0), rgba(0,0,0,1)),url('../static/images/codigo.png');"></div>
       <div class="c-cont">   
         <h2 class="c-title">Beat the Bits</h2>
       <h5 class="c-subtitle">A coding competition hosted on local programming contest control.</h5>  

@@ -1,0 +1,9 @@
+body{
+    background-color: rgb(151, 202, 247);
+}
+
+.main-image{
+height: 300px;
+width: 500px;
+background: url("{{url_for('static', filename='main-image.png')}}");
+}
