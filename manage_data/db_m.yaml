@@ -1,0 +1,5 @@
+mysql_host: 'localhost'
+mysql_user: 'root'
+mysql_password: 'Adesh@15'
+mysql_db: 'tutorialManageData'
+sec_key: 'i\x03\x92W\x82\xb5\x93\xd9\xfbPpU\xb4~I\xd2\x1f\x8e\x96\xfe\xb0!\xf6!'

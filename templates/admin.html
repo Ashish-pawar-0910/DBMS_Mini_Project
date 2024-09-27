@@ -18,7 +18,7 @@
     </ul>
     <ul class="nav navbar-nav navbar-right">
       <li class="dropdown">
-        <a class="dropdown-toggle" data-toggle="dropdown" href="#">{{useradmin}}
+        <a class="dropdown-toggle" data-toggle="dropdown" href="#">admin
         <span class="caret"></span></a>
         <ul class="dropdown-menu">
           <li><a href="{{ url_for('logout') }}" class="btn btn-primary p-3">Logout</a></li>
@@ -29,23 +29,20 @@
 </nav>
 <center>
 
-<form class="event-form" action="/event" method="POST">
+<form class="event-form" action="/events" method="POST">
   <input type="text" placeholder="Event ID" name="event-id" required/><br />
   <input type="text" placeholder="Event Name" name="event-name" required/><br />
-  <span div="rbtn"><input type="radio" name="event-type" value='technical' required></span>Technical
+  <span div="rbtn"><input type="radio" name="event-type" value='technical' required>Technical
   <span div="rbtn"><input type="radio" name="event-type" value='non technical' required></span>Non Technical<br />
   <input type="date" name="event-date" id="edate" min={{current_date}} required><br />
-  <input type="time" value="13:00" placeholder="event-start-time" required><br />
-  <input type="time" value="13:00" placeholder="event-end-time" required><br />
+  <input type="time" value="13:00" name="event-start-time" placeholder="event-start-time" required><br />
+  <input type="time" value="13:00" name="event-end-time" placeholder="event-end-time" required><br />
   <input type="text" placeholder="Event Information" name="event-info" maxlength="1000" required/><br />
   <input type="text" placeholder="Event Location" name="event-location" required/><br />
   <br><br>
   <button type="submit" class="btn btn-primary p-3" >Create</button>
 </form>
 
-<div class="ss" style="color:#ffffff;">
-  {{etype}}, {{edate}}, {{estime}}, {{eetime}}
-</div>
 
 <div class="events-list" style="margin-top: 10px;">
   <table class="events">
@@ -59,16 +56,38 @@
       <th>End Time</th>
       <th>Event Location</th>
     </tr>
-
-    <!-- <tr>
-      <td></td>
-      <td></td>
-      <td></td>
-      <td></td>
-      <td></td>
-      <td></td>
-      <td></td>
-    </tr> -->
+    {% if flag=='success' %}
+      <script>
+        alert("Event created Successfully!!")
+      </script>
+    {% endif %}
+    {% for event in event_data %}
+    <tr>
+      <td>{{event.eid}}</td>
+      <td>{{event.ename}}</td>
+      <td>{{event.etype}}</td>
+      <td>{{event.edate}}</td>
+      <td>{{event.estime}}</td>
+      <td>{{event.eetime}}</td>
+      <td>{{event.eloc}}</td>
+      <td>
+        <!-- <form action="" method="post"> -->
+        <form>
+          <button type="submit" style="background-color: black; border:none">
+            <i class='fa fa-edit' style='color:#ffffff'></i>
+          </button>
+        </form>
+      </td>
+      <td>
+        <!-- <form action="{{ url_for('registerEvent', event_id = event.eid) }}" -->
+        <form>
+          <button type="submit" style="background-color: black; border:none">
+            <i class='fa fa-trash' style='color:#ffffff' ></i>
+          </button>
+        </form>
+      </td>
+    </tr>
+    {% endfor %}
 
   </table>
 </div>
